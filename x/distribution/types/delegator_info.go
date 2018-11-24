@@ -64,13 +64,15 @@ func (di DelegationDistInfo) WithdrawRewards(wc WithdrawContext, vi ValidatorDis
 	accum := di.GetDelAccum(wc.Height, delegatorShares)
 	di.DelPoolWithdrawalHeight = wc.Height
 
-	var withdrawalTokens DecCoins
-	if accum.Equal(vi.DelAccum.Accum) {
-		// required due to rounding faults
-		withdrawalTokens = vi.DelPool
-	} else {
-		withdrawalTokens = vi.DelPool.MulDec(accum).QuoDec(vi.DelAccum.Accum)
-	}
+	//XXX - working code here (commented) replaced with bug code below
+	//var withdrawalTokens DecCoins
+	//if accum.Equal(vi.DelAccum.Accum) {
+	//// required due to rounding faults
+	//withdrawalTokens = vi.DelPool
+	//} else {
+	//withdrawalTokens = vi.DelPool.MulDec(accum).QuoDec(vi.DelAccum.Accum)
+	//}
+	withdrawalTokens := vi.DelPool.MulDec(accum).QuoDec(vi.DelAccum.Accum)
 
 	// defensive check for impossible accum ratios
 	if accum.GT(vi.DelAccum.Accum) {
